@@ -1,0 +1,61 @@
+---
+title: "simon"
+output: html_notebook
+---
+
+```{r}
+#import readr
+library(readr)
+
+#import simons diversity data
+simon <- read_csv("simons-genome-diversity-project_reports_Simons_Genome_Diversity_Project_sample_reference_results.csv")
+
+#subset data to get sample B11
+simon_B11 <- subset(simon, name == "LP6005441-DNA_B11")
+
+#sort the subsetted data
+#create chromosome levels
+levels <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","X","Y","MT")
+#reorder by chromosome
+simon_B11$reference_name <- factor(simon_B11$reference_name, ordered = TRUE, levels)
+
+#str(simon_B11)
+#summary(simon_B11)
+
+#import ggplot2
+library(ggplot2)
+#set to classic theme
+theme_set(theme_classic())
+
+#plot Ti/Tv Ratios for Each Chromosome & MT DNA
+ggplot(simon_B11, aes(x=reference_name, y=titv)) +
+  geom_bar(stat="identity", width = 0.6, fill="black") +
+  geom_hline(yintercept=2.2, color="red", size=0.75) +
+  xlab("Chromosomes & MT DNA") +
+  ylab("Ti/Tv ratio") +
+  labs(title="Ti/Tv Ratios for Each Chromosome & MT DNA", 
+           subtitle="Sample: LP6005441-DNA_B11", 
+           caption="Source: Simons Genome Diversity Project")
+
+#plot Homozygous Variants for Each Chromosome & MT DNA
+ggplot(simon_B11, aes(x=reference_name, y=HOM_ALT)) +
+  geom_bar(stat="identity", width = 0.6, fill="black") +
+  xlab("Chromosomes & MT DNA") +
+  ylab("Homozygous Variants") +
+  labs(title="Homozygous Variants for Each Chromosome & MT DNA", 
+           subtitle="Sample: LP6005441-DNA_B11", 
+           caption="Source: Simons Genome Diversity Project")
+
+#plot Heterozygous Variants for Each Chromosome & MT DNA
+ggplot(simon_B11, aes(x=reference_name, y=HAS_ALT)) +
+  geom_bar(stat="identity", width = 0.6, fill="black") +
+  xlab("Chromosomes & MT DNA") +
+  ylab("Heterozygous Variants") +
+  labs(title="Heterozygous Variants for Each Chromosome & MT DNA", 
+           subtitle="Sample: LP6005441-DNA_B11", 
+           caption="Source: Simons Genome Diversity Project")
+
+```
+
+
+
